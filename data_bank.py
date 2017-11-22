@@ -2,7 +2,6 @@
 # import all the packages that are needed
 
 import sqlite3
-import tushare as ts
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -21,7 +20,8 @@ conn = sqlite3.connect("data/drugsatcde.db")
 
 # to form the web page
 
-app = dash.Dash()
+app = dash.Dash(__name__)
+server = app.server
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 app.layout = html.Div(children=[
     html.H2(children=u'CDE收审情况'),
