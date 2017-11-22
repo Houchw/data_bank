@@ -17,7 +17,7 @@ plt.rcParams['axes.unicode_minus'] = False
 # in this database, there are three tables named 'ims_sales', 'drugs_in_review',
 # 'drugs_appl_received'
 
-conn = sqlite3.connect("D:/Databank/drugsatcde.db")
+conn = sqlite3.connect("data/drugsatcde.db")
 
 # to form the web page
 
