@@ -3,14 +3,10 @@
 
 import sqlite3
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
-plt.rcParams['font.sans-serif'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
 
 # connect the database
 # in this database, there are three tables named 'ims_sales', 'drugs_in_review',
@@ -132,4 +128,4 @@ def update_table(received_reviewed, app_type, drug_type, app_no, drug_name, corp
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug = True)
