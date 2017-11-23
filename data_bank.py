@@ -7,9 +7,6 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
-
-
-
 # to form the web page
 
 app = dash.Dash(__name__)
@@ -54,21 +51,21 @@ app.layout = html.Div(children=[
         dcc.Input(id = 'app_no', value='', type = 'text'),
 
         html.Br(),
-        html.Label(u'药品名称'),
+        html.Br(),
+        html.Label(u'药品名称：请输入“吸入 氨溴索”试试'),
         dcc.Input(id = 'drug_name', value = '', type = 'text'),
 
         html.Br(),
-        html.Label(u'公司名称'),
+        html.Br(),
+        html.Label(u'公司名称：请输入“恒瑞 齐鲁”试试'),
         dcc.Input(id = 'corp_name', value = '', type = 'text'),
 
         html.Br(),
-        html.Label(u'提交'),
-        dcc.RadioItems(id = 'update',
-                       options = [{'label': 'yes', 'value':'yes'}, {'label': 'no', 'value':'no'}],
-                       value = 'no',
-                       labelStyle={'display': 'inline-block'}
-                      )
-    ], style = {'columnCount': 1, 'width': '48%'}),
+
+
+    ], style = {'columnCount': 2, 'width': '48%'}),
+
+    html.Button('Submit', id = 'button'),
 
     html.Hr(),
     html.Br(),
@@ -78,16 +75,16 @@ app.layout = html.Div(children=[
 
 @app.callback(
     dash.dependencies.Output('query_results', 'children'),
-    [dash.dependencies.Input('received_reviewed', 'value'),
-     dash.dependencies.Input('app_type', 'value'),
-     dash.dependencies.Input('drug_type', 'value'),
-     dash.dependencies.Input('app_no', 'value'),
-     dash.dependencies.Input('drug_name', 'value'),
-     dash.dependencies.Input('corp_name', 'value'),
-     dash.dependencies.Input('update', 'value')
-    ]
+    [dash.dependencies.Input('button', 'n_clicks')],
+    [dash.dependencies.State('received_reviewed', 'value'),
+     dash.dependencies.State('app_type', 'value'),
+     dash.dependencies.State('drug_type', 'value'),
+     dash.dependencies.State('app_no', 'value'),
+     dash.dependencies.State('drug_name', 'value'),
+     dash.dependencies.State('corp_name', 'value'),
+     ]
 )
-def update_table(received_reviewed, app_type, drug_type, app_no, drug_name, corp_name, update):
+def update_table(n_clicks, received_reviewed, app_type, drug_type, app_no, drug_name, corp_name):
 
     if drug_name != '':
         drug_name = drug_name.strip().split()
@@ -110,13 +107,8 @@ def update_table(received_reviewed, app_type, drug_type, app_no, drug_name, corp
     if app_no == '':
         app_no = "%"
 
-    if update == 'yes':
-        query = "select * from " + received_reviewed + " where app_type like '" + app_type + "' and drug_type like '" + drug_type +\
+    query = "select * from " + received_reviewed + " where app_type like '" + app_type + "' and drug_type like '" + drug_type +\
             "' and app_no like '" + app_no + "' and (" + drug_name + ") and (" + corp_name + ")"
-        update = 'no'
-
-    else:
-        query = "select * from " + received_reviewed + ' limit 20'
 
     # connect the database
     # in this database, there are three tables named 'ims_sales', 'drugs_in_review',
