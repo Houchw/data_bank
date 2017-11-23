@@ -1,7 +1,7 @@
 # -*-coding:utf-8-*-
 # import all the packages that are needed
 
-import os
+import sys
 import sqlite3
 #import pandas as pd
 import dash
@@ -115,7 +115,8 @@ def update_table(n_clicks, received_reviewed, app_type, drug_type, app_no, drug_
     # in this database, there are three tables named 'ims_sales', 'drugs_in_review',
     # 'drugs_appl_received'
 
-    db_path = os.getcwd() + "/data/drugsatcde.db"
+    db_path = sys.path[0] + "/data/drugsatcde.db"
+    #print(db_path)
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     results = cursor.execute(query)
