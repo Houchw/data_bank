@@ -2,7 +2,7 @@
 # import all the packages that are needed
 
 import sqlite3
-import pandas as pd
+#import pandas as pd
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -123,10 +123,13 @@ def update_table(received_reviewed, app_type, drug_type, app_no, drug_name, corp
     # 'drugs_appl_received'
 
     conn = sqlite3.connect("data/drugsatcde.db")
-    dataframe = pd.read_sql(query, conn)
+    cursor = conn.cursor()
+    results = cursor.execute(query)
+    results = results.fetchall()
+    columns_list = [t[0] for t in cursor.description]
     conn.close()
 
-    return html.Table([html.Tr([html.Th(col) for col in dataframe.columns])] + [html.Tr([html.Td(dataframe.iloc[i][col]) for col in dataframe.columns]) for i in range(len(dataframe))])
+    return html.Table([html.Tr([html.Th(col) for col in columns_list])] + [html.Tr([html.Td(col) for col in results[i]]) for i in range(len(results))])
 
 
 if __name__ == '__main__':
