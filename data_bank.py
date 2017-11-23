@@ -8,11 +8,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 
-# connect the database
-# in this database, there are three tables named 'ims_sales', 'drugs_in_review',
-# 'drugs_appl_received'
 
-conn = sqlite3.connect("data/drugsatcde.db")
 
 # to form the web page
 
@@ -122,7 +118,13 @@ def update_table(received_reviewed, app_type, drug_type, app_no, drug_name, corp
     else:
         query = "select * from " + received_reviewed + ' limit 20'
 
+    # connect the database
+    # in this database, there are three tables named 'ims_sales', 'drugs_in_review',
+    # 'drugs_appl_received'
+
+    conn = sqlite3.connect("data/drugsatcde.db")
     dataframe = pd.read_sql(query, conn)
+    conn.close()
 
     return html.Table([html.Tr([html.Th(col) for col in dataframe.columns])] + [html.Tr([html.Td(dataframe.iloc[i][col]) for col in dataframe.columns]) for i in range(len(dataframe))])
 
